@@ -42,6 +42,7 @@ post.get('/', (req, res)=> {
   res.status(500).json(err)
  })
 })
+
 post.get('/:id/comments', (req, res)=> {
  const id = req.params.id
   data.findPostComments(id)
@@ -55,6 +56,59 @@ post.get('/:id/comments', (req, res)=> {
 })
 
 
+post.get('/:id', (req, res)=>{
+
+const {id} = req.params
+data.findById(id)
+.then(posted => {
+
+ res.status(200).json(posted)
+}).catch(err => {
+
+ res.status(500).json(err)
+})
+
+post.get('/:id/comments', (req, res)=> {
+
+const {id} = req.params
+data.findCommentById(id)
+.then(posted => {
+
+ res.status(200).json(posted)
+
+}).catch(err => {
+
+ res.status(200).json(err)
+})
+})
+
+post.delete('/:id',(req, res) => {
 
 
+const {id} = req.params
+data.remove(id)
+.then(removed => {
+
+ res.status(200).json(removed)
+}).catch(err => {
+
+ res.status(500).json(err)
+})
+} )
+
+post.put('/:id', (req, res)=> {
+ 
+ const {id} = req.params;
+ const body = req.body
+ data.update(id, body)
+ .then(updated => {
+
+  res.status(200).json(updated);
+ }).catch(err => {
+
+  res.status(500).json(err)
+ })
+})
+
+})
 module.exports = post
